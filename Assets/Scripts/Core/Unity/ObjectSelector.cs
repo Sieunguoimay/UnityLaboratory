@@ -12,19 +12,34 @@ namespace Core.Unity
     public class ObjectSelector
     {
         public UnityEngine.Object source;
-        public object SelectedData => SelectedTypeIndex < 0 ? null : _srcData[SelectedTypeIndex];
-        public Type SelectedType => SelectedTypeIndex < 0 ? null : _srcTypes[SelectedTypeIndex];
+        public object selectedData;
+
+        public SerializableTypeWrapper selectedTypeWrapper = new SerializableTypeWrapper();
+
+#if UNITY_EDITOR
+
         private readonly List<Type> _srcTypes = new List<Type>();
         private readonly List<object> _srcData = new List<object>();
-        [NonSerialized] public int SelectedTypeIndex = -1;
         [NonSerialized] public string[] SrcTypesOptions;
 
-        public void CreateSrcTypeOptions()
+        public int selectedTypeIndex = -1;
+
+        public void UpdateSerializable(int index)
+        {
+            if (index < 0) return;
+            selectedData = _srcData[index];
+
+            selectedTypeWrapper = new SerializableTypeWrapper()
+            {
+                typeFullName = _srcTypes[index].FullName
+            };
+        }
+
+        public void CreateSrcTypeOptionsFromInspector()
         {
             if (source == null) return;
 
             _srcTypes.Clear();
-            SelectedTypeIndex = -1;
 
             if (source is GameObject src)
             {
@@ -48,12 +63,13 @@ namespace Core.Unity
                 SrcTypesOptions[0] = source.GetType().Name;
             }
 
-            if (SrcTypesOptions.Length > 0)
+            if (SrcTypesOptions.Length > 0 && selectedTypeIndex < 0)
             {
-                SelectedTypeIndex = 0;
+                selectedTypeIndex = 0;
             }
+
+            UpdateSerializable(selectedTypeIndex);
         }
-#if UNITY_EDITOR
 
         public static void DrawObjectSelector(ObjectSelector selector)
         {
@@ -63,12 +79,17 @@ namespace Core.Unity
             if (selector.source == null || selector.source != src || selector.SrcTypesOptions == null)
             {
                 selector.source = src;
-                selector.CreateSrcTypeOptions();
+                selector.CreateSrcTypeOptionsFromInspector();
             }
 
             if (selector.SrcTypesOptions == null) return;
-            selector.SelectedTypeIndex = EditorGUILayout.Popup(selector.SelectedTypeIndex,
+            var index = EditorGUILayout.Popup(selector.selectedTypeIndex,
                 selector.SrcTypesOptions, GUILayout.Width(50));
+            if (selector.selectedTypeIndex != index)
+            {
+                selector.selectedTypeIndex = index;
+                selector.UpdateSerializable(index);
+            }
         }
 #endif
     }

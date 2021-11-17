@@ -19,6 +19,9 @@
                 <e p="ColorPointDrawer.cs" t="Include" />
                 <e p="EditorList.cs" t="Include" />
               </e>
+              <e p="ObjectSelector.cs" t="Include" />
+              <e p="PathSelector.cs" t="Include" />
+              <e p="SerializableTypeWrapper.cs" t="Include" />
             </e>
           </e>
           <e p="InputManager.cs" t="Include" />

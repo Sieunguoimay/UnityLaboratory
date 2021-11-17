@@ -26,7 +26,6 @@ namespace Core.Unity
         private MethodInfo _unregisterMethInfo;
         private MethodInfo _registerMethInfo;
 
-
         private bool _initialized;
         private bool _subscribed;
 
@@ -168,7 +167,7 @@ namespace Core.Unity
                 var pt = p.PropertyType;
 
                 Debug.Log(p.Name);
-                
+
                 if (pt.IsClass)
                 {
                     var pfsInfo = pt.GetFields();
@@ -201,6 +200,10 @@ namespace Core.Unity
             }
         }
 
+        public void SetInt(int d, int e, int f)
+        {
+        }
+
         public class BroadcastListener<T> : IBroadcastListener<T>
         {
             private readonly DataBinderTest _binderTest;
@@ -215,8 +218,9 @@ namespace Core.Unity
                 _binderTest.UpdateTarget(stateData);
             }
         }
-        
+
         [SerializeField] public List<ColorPoint> colorPoints;
+
         [Serializable]
         public class ColorPoint
         {

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -204,91 +204,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectors:
   - srcPath:
-    - selectedIndex: 19
-      options:
-      - useGUILayout
-      - runInEditMode
-      - allowPrefabModeInPlayMode
-      - enabled
-      - isActiveAndEnabled
-      - transform
-      - gameObject
-      - tag
-      - rigidbody
-      - rigidbody2D
-      - camera
-      - light
-      - animation
-      - constantForce
-      - renderer
-      - audio
-      - networkView
-      - collider
-      - collider2D
-      - hingeJoint
-      - particleSystem
-      - name
-      - hideFlags
-      - playerPrefab
-      - playerUIPrefab
-      - canvas
-      - playerSharedConfigDataAsset
-      - _player
-      baseTypeFullName: Main
+    - baseTypeWrapper:
+        typeFullName: Core.Unity.DataBinderTest
+      selectedMemVarTypeWrapper:
+        typeFullName: 
+      selectedMemVarName: 
+      isProperty: 0
+      isField: 0
+      isToRead: 1
     dstSelector:
-      source: {fileID: 414411565}
-      selectedTypeIndex: 1
+      source: {fileID: 361478229}
+      selectedTypeWrapper:
+        typeFullName: Core.Unity.DataBinderTest
+      selectedTypeIndex: 0
     dstPath:
-    - selectedIndex: 25
-      options:
-      - current
-      - sendNavigationEvents
-      - pixelDragThreshold
-      - currentInputModule
-      - firstSelectedGameObject
-      - currentSelectedGameObject
-      - lastSelectedGameObject
-      - isFocused
-      - alreadySelecting
-      - baseEventDataCache
-      - useGUILayout
-      - runInEditMode
-      - allowPrefabModeInPlayMode
-      - enabled
-      - isActiveAndEnabled
-      - transform
-      - gameObject
-      - tag
-      - rigidbody
-      - rigidbody2D
-      - camera
-      - light
-      - animation
-      - constantForce
-      - renderer
-      - audio
-      - networkView
-      - collider
-      - collider2D
-      - hingeJoint
-      - particleSystem
-      - name
-      - hideFlags
-      - m_SystemInputModules
-      - m_CurrentInputModule
-      - m_EventSystems
-      - m_FirstSelected
-      - m_sendNavigationEvents
-      - m_DragThreshold
-      - m_CurrentSelected
-      - m_HasFocus
-      - m_SelectionGuard
-      - m_DummyData
-      - s_RaycastComparer
-      baseTypeFullName: UnityEngine.EventSystems.EventSystem
+    - baseTypeWrapper:
+        typeFullName: Core.Unity.DataBinderTest
+      selectedMemVarTypeWrapper:
+        typeFullName: 
+      selectedMemVarName: 
+      isProperty: 0
+      isField: 0
+      isToRead: 0
   srcSelector:
     source: {fileID: 361478226}
-    selectedTypeIndex: 1
+    selectedTypeWrapper:
+      typeFullName: Core.Unity.DataBinderTest
+    selectedTypeIndex: 2
 --- !u!1 &414411565
 GameObject:
   m_ObjectHideFlags: 0
