@@ -13,6 +13,7 @@
             <e p="Registrars.cs" t="Include" />
             <e p="Singletons.cs" t="Include" />
             <e p="Unity" t="Include">
+              <e p="ArrayUtils.cs" t="Include" />
               <e p="DataBinder.cs" t="Include" />
               <e p="DataBinderTest.cs" t="Include" />
               <e p="Editor" t="Include">

@@ -168,7 +168,7 @@ Transform:
   m_GameObject: {fileID: 361478226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -207,10 +207,18 @@ MonoBehaviour:
     - baseTypeWrapper:
         typeFullName: Core.Unity.DataBinderTest
       selectedMemVarTypeWrapper:
-        typeFullName: 
-      selectedMemVarName: 
+        typeFullName: System.Int32
+      selectedMemVarName: filter
       isProperty: 0
-      isField: 0
+      isField: 1
+      isToRead: 1
+    - baseTypeWrapper:
+        typeFullName: System.Int32
+      selectedMemVarTypeWrapper:
+        typeFullName: System.Int32
+      selectedMemVarName: m_value
+      isProperty: 0
+      isField: 1
       isToRead: 1
     dstSelector:
       source: {fileID: 361478229}
@@ -221,16 +229,49 @@ MonoBehaviour:
     - baseTypeWrapper:
         typeFullName: Core.Unity.DataBinderTest
       selectedMemVarTypeWrapper:
-        typeFullName: 
-      selectedMemVarName: 
+        typeFullName: System.Collections.Generic.List`1[[Core.Unity.DataBinderTest+ColorPoint,
+          Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      selectedMemVarName: colorPoints
+      isProperty: 0
+      isField: 1
+      isToRead: 0
+    - baseTypeWrapper:
+        typeFullName: System.Collections.Generic.List`1[[Core.Unity.DataBinderTest+ColorPoint,
+          Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      selectedMemVarTypeWrapper:
+        typeFullName: System.Void
+      selectedMemVarName: Add
       isProperty: 0
       isField: 0
       isToRead: 0
+  - srcPath:
+    - baseTypeWrapper:
+        typeFullName: Core.Unity.DataBinderTest
+      selectedMemVarTypeWrapper:
+        typeFullName: System.Boolean
+      selectedMemVarName: _subscribed
+      isProperty: 0
+      isField: 1
+      isToRead: 1
+    dstSelector:
+      source: {fileID: 361478227}
+      selectedTypeWrapper:
+        typeFullName: Main
+      selectedTypeIndex: 0
+    dstPath:
+    - baseTypeWrapper:
+        typeFullName: Main
+      selectedMemVarTypeWrapper:
+        typeFullName: UnityEngine.GameObject
+      selectedMemVarName: playerUIPrefab
+      isProperty: 0
+      isField: 1
+      isToRead: 0
   srcSelector:
-    source: {fileID: 361478226}
+    source: {fileID: 361478229}
     selectedTypeWrapper:
       typeFullName: Core.Unity.DataBinderTest
-    selectedTypeIndex: 2
+    selectedTypeIndex: 0
 --- !u!1 &414411565
 GameObject:
   m_ObjectHideFlags: 0

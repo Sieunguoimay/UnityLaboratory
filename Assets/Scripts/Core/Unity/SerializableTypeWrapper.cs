@@ -27,28 +27,35 @@ namespace Core.Unity
 
             return _type;
         }
-
-        public object GetPropertyValue(object data, string name)
-        {
-            var baseType = GetSerializedType();
-            return baseType.GetProperty(name)?.GetValue(data);
-        }
-
-        public object GetFieldValue(object data, string name)
-        {
-            var baseType = GetSerializedType();
-            return baseType.GetField(name)?.GetValue(data);
-        }
-        public void SetPropertyValue(object data, string name, object value)
-        {
-            var baseType = GetSerializedType();
-            baseType.GetProperty(name)?.SetValue(data, value);
-        }
-
-        public void SetFieldValue(object data, string name, object value)
-        {
-            var baseType = GetSerializedType();
-            baseType.GetField(name)?.SetValue(data, value);
-        }
+        //
+        // public object GetPropertyValue(object data, string name)
+        // {
+        //     var baseType = GetSerializedType();
+        //     return baseType.GetProperty(name)?.GetValue(data);
+        // }
+        //
+        // public object GetFieldValue(object data, string name)
+        // {
+        //     var baseType = GetSerializedType();
+        //     return baseType.GetField(name)?.GetValue(data);
+        // }
+        //
+        // public void SetPropertyValue(object data, string name, object value)
+        // {
+        //     var baseType = GetSerializedType();
+        //     baseType.GetProperty(name)?.SetValue(data, value);
+        // }
+        //
+        // public void SetFieldValue(object data, string name, object value)
+        // {
+        //     var baseType = GetSerializedType();
+        //     baseType.GetField(name)?.SetValue(data, value);
+        // }
+        //
+        // public object InvokeMethod(object data, string name, object input)
+        // {
+        //     var baseType = GetSerializedType();
+        //     return baseType.GetMethod(name)?.Invoke(data, input == null ? null : new[] {input});
+        // }
     }
 }

@@ -83,8 +83,7 @@ namespace Core.Unity
             }
 
             if (selector.SrcTypesOptions == null) return;
-            var index = EditorGUILayout.Popup(selector.selectedTypeIndex,
-                selector.SrcTypesOptions, GUILayout.Width(50));
+            var index = EditorGUILayout.Popup(selector.selectedTypeIndex, selector.SrcTypesOptions, GUILayout.Width(50));
             if (selector.selectedTypeIndex != index)
             {
                 selector.selectedTypeIndex = index;

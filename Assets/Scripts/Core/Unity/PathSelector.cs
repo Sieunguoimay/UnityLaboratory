@@ -14,25 +14,40 @@ namespace Core.Unity
     public class PathSelector
     {
         public SerializableTypeWrapper baseTypeWrapper = new SerializableTypeWrapper();
+
         public SerializableTypeWrapper selectedMemVarTypeWrapper = new SerializableTypeWrapper();
         public string selectedMemVarName;
+
         public bool isProperty;
         public bool isField;
         public bool isToRead;
 
-        public object GetValue(object data)
+        const BindingFlags PropertyFlag = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+        const BindingFlags FieldFlag = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+        const BindingFlags MethodFlag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
+        public object GetValue(object obj)
         {
             if (isProperty)
             {
-                return baseTypeWrapper.GetPropertyValue(data, selectedMemVarName);
+                return baseTypeWrapper.GetSerializedType().GetProperty(selectedMemVarName, PropertyFlag)?.GetValue(obj);
             }
             else if (isField)
             {
-                return baseTypeWrapper.GetFieldValue(data, selectedMemVarName);
+                return baseTypeWrapper.GetSerializedType().GetField(selectedMemVarName, FieldFlag)?.GetValue(obj);
             }
             else
             {
-                return null;
+                var methInfo = baseTypeWrapper.GetSerializedType().GetMethods(MethodFlag).FirstOrDefault(m => m.Name.Equals(selectedMemVarName) && m.ReturnType != null);
+                if (methInfo != null)
+                {
+                    return methInfo?.Invoke(obj, null);
+                }
+                else
+                {
+                    Debug.LogError($"{nameof(PathSelector)}{selectedMemVarName} method return type is void");
+                    return null;
+                }
             }
         }
 
@@ -40,17 +55,55 @@ namespace Core.Unity
         {
             if (isProperty)
             {
-                baseTypeWrapper.SetPropertyValue(target, selectedMemVarName, data);
+                baseTypeWrapper.GetSerializedType().GetProperty(selectedMemVarName, PropertyFlag)?.SetValue(target, data);
             }
             else if (isField)
             {
-                baseTypeWrapper.SetFieldValue(target, selectedMemVarName, data);
+                baseTypeWrapper.GetSerializedType().GetField(selectedMemVarName, FieldFlag)?.SetValue(target, data);
             }
             else
             {
+                var methInfo = baseTypeWrapper.GetSerializedType().GetMethods(MethodFlag).FirstOrDefault(m => m.Name.Equals(selectedMemVarName) && m.GetParameters().Length == 1);
+                if (methInfo != null)
+                {
+                    methInfo?.Invoke(target, new[] {data});
+                }
+                else
+                {
+                    Debug.LogError($"{nameof(PathSelector)}.{selectedMemVarName} no matching method found");
+                }
             }
         }
 
+
+        public Type GetMemVarType(bool toRead = true)
+        {
+            if (isProperty)
+            {
+                var propInfo = baseTypeWrapper.GetSerializedType().GetProperty(selectedMemVarName, PropertyFlag);
+                return propInfo?.PropertyType;
+            }
+            else if (isField)
+            {
+                var fieldInfo = baseTypeWrapper.GetSerializedType().GetField(selectedMemVarName, FieldFlag);
+                return fieldInfo?.FieldType;
+            }
+            else
+            {
+                if (toRead)
+                {
+                    var methInfo = baseTypeWrapper.GetSerializedType().GetMethods(MethodFlag).FirstOrDefault(m => m.Name.Equals(selectedMemVarName) && m.ReturnType != null);
+                    return methInfo?.ReturnType;
+                }
+                else
+                {
+                    var methInfo = baseTypeWrapper.GetSerializedType().GetMethods(MethodFlag).FirstOrDefault(m => m.Name.Equals(selectedMemVarName) && m.GetParameters().Length == 1);
+                    if (methInfo != null)
+                        return methInfo.GetParameters()[0].ParameterType;
+                    return null;
+                }
+            }
+        }
 #if UNITY_EDITOR
         private string[] _options = new string[0];
         private PropertyInfo[] _propertyInfos;
@@ -78,23 +131,6 @@ namespace Core.Unity
 
             if (baseType == null) return;
 
-            BindingFlags propertyFlag = BindingFlags.Public | BindingFlags.Instance;
-            BindingFlags fieldFlag = BindingFlags.Public | BindingFlags.Instance;
-            BindingFlags methodFlag = BindingFlags.Public | BindingFlags.Instance;
-
-            if (toRead)
-            {
-                propertyFlag |= BindingFlags.GetProperty;
-                fieldFlag |= BindingFlags.GetField;
-                methodFlag |= BindingFlags.DeclaredOnly;
-            }
-            else
-            {
-                propertyFlag |= BindingFlags.SetProperty;
-                fieldFlag |= BindingFlags.SetField;
-                methodFlag |= BindingFlags.DeclaredOnly;
-            }
-
             if (baseTypeWrapper.GetSerializedType() != baseType)
             {
                 UpdateSerializedBaseType(baseType.FullName);
@@ -102,9 +138,18 @@ namespace Core.Unity
                 isToRead = toRead;
             }
 
-            _propertyInfos = baseType.GetProperties(propertyFlag);
-            _fieldInfos = baseType.GetFields(fieldFlag);
-            _methodInfos = baseType.GetMethods(methodFlag);
+            _propertyInfos = baseType.GetProperties(PropertyFlag);
+            _fieldInfos = baseType.GetFields(FieldFlag);
+            _methodInfos = baseType.GetMethods(MethodFlag);
+            if (isToRead)
+            {
+                _methodInfos = _methodInfos.Where(t => (t.GetParameters().Length == 0) && (t.ReturnType != null)).ToArray();
+            }
+            else
+            {
+                _methodInfos = _methodInfos.Where(t => t.GetParameters().Length == 1).ToArray();
+            }
+
             _options = _propertyInfos.Select(p => p.Name).ToArray();
             _options = _options.Concat(_fieldInfos.Select(p => p.Name)).ToArray();
             _options = _options.Concat(_methodInfos.Select(p => p.Name)).ToArray();
@@ -121,33 +166,16 @@ namespace Core.Unity
         public void UpdateSerializedMemVar()
         {
             if (_selectedIndex < 0 || _selectedIndex >= _options.Length) return;
-
-            selectedMemVarTypeWrapper = new SerializableTypeWrapper()
-            {
-                typeFullName = GetMemVarTypeFromInspector().FullName
-            };
             selectedMemVarName = _options[_selectedIndex];
             isProperty = IsPropertyFromInspector();
             isField = IsFieldFromInspector();
+
+            selectedMemVarTypeWrapper = new SerializableTypeWrapper()
+            {
+                typeFullName = GetMemVarType()?.FullName
+            };
         }
 
-        public Type GetMemVarTypeFromInspector()
-        {
-            if (_selectedIndex == -1 || _propertyInfos == null || _fieldInfos == null || _methodInfos == null) return null;
-
-            if (IsPropertyFromInspector())
-            {
-                return _propertyInfos[_selectedIndex].PropertyType;
-            }
-            else if (IsFieldFromInspector())
-            {
-                return _fieldInfos[_selectedIndex - _propertyInfos.Length].FieldType;
-            }
-            else
-            {
-                return _methodInfos[_selectedIndex - _propertyInfos.Length - _fieldInfos.Length].ReturnType;
-            }
-        }
 
         private bool IsPropertyFromInspector() => (_selectedIndex < _propertyInfos.Length);
         private bool IsFieldFromInspector() => (_selectedIndex < _fieldInfos.Length) && !IsPropertyFromInspector();
@@ -173,50 +201,44 @@ namespace Core.Unity
             return false;
         }
 
-        public static void DrawPath(List<PathSelector> pathContainer, Type defaultType, bool toRead)
+        public static PathSelector CreatePathSelector(PathSelector[] pathContainer, Type defaultType, bool toRead)
         {
-            if (GUILayout.Button("-", GUILayout.Width(20f)))
+            var ps = new PathSelector();
+            if (pathContainer != null && pathContainer.Length > 0)
             {
-                if (pathContainer.Count > 0)
-                {
-                    pathContainer.RemoveAt(pathContainer.Count - 1);
-                }
+                var basePs = pathContainer[pathContainer.Length - 1];
+                ps.SetBaseType(basePs.GetMemVarType(true), toRead);
+            }
+            else
+            {
+                ps.SetBaseType(defaultType, toRead);
             }
 
-            if (GUILayout.Button("+", GUILayout.Width(20f)))
-            {
-                var ps = new PathSelector();
-                if (pathContainer.Count > 0)
-                {
-                    ps.SetBaseType(pathContainer[pathContainer.Count - 1].selectedMemVarTypeWrapper.GetSerializedType(), toRead);
-                }
-                else
-                {
-                    ps.SetBaseType(defaultType, toRead);
-                }
+            return ps;
+        }
 
-                pathContainer.Add(ps);
-            }
-
-            if (pathContainer.Count > 0)
+        public static void DrawPath(PathSelector[] pathContainer, Type defaultType, bool toRead)
+        {
+            if (pathContainer == null) return;
+            if (pathContainer.Length > 0)
             {
                 if (defaultType != pathContainer[0].baseTypeWrapper.GetSerializedType())
                 {
                     pathContainer[0].SetBaseType(defaultType, toRead);
-                    for (var j = 1; j < pathContainer.Count; j++)
+                    for (var j = 1; j < pathContainer.Length; j++)
                     {
                         pathContainer[j].Reset();
                     }
                 }
             }
 
-            for (int i = 0; i < pathContainer.Count; i++)
+            for (int i = 0; i < pathContainer.Length; i++)
             {
                 var path = pathContainer[i];
 
                 if (path?.Draw() ?? false)
                 {
-                    for (var j = i + 1; j < pathContainer.Count; j++)
+                    for (var j = i + 1; j < pathContainer.Length; j++)
                     {
                         if (j == i + 1)
                             pathContainer[j].SetBaseType(pathContainer[j - 1].selectedMemVarTypeWrapper.GetSerializedType(), toRead);
