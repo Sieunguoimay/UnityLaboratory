@@ -19,18 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a43714c1-dd39-4abd-a0a0-526d4f05a3ba" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/ArrayUtils.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/ArrayUtils.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Laboratory/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Laboratory/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Laboratory/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Laboratory/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/DataBinder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/DataBinder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/DataBinderTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/DataBinderTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/ObjectSelector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/ObjectSelector.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/PathSelector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/PathSelector.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/SerializableTypeWrapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Unity/SerializableTypeWrapper.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a43714c1-dd39-4abd-a0a0-526d4f05a3ba" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -107,6 +96,7 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Unity/DataBinderTest.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Unity/PathSelector.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Unity/DataBinder.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Player/PlayerSharedConfigData.cs" />
       </list>
     </option>
   </component>
@@ -159,7 +149,7 @@
       <workItem from="1636939382734" duration="25455000" />
       <workItem from="1637025730177" duration="6595000" />
       <workItem from="1637112381055" duration="26852000" />
-      <workItem from="1637203593073" duration="16552000" />
+      <workItem from="1637203593073" duration="16935000" />
     </task>
     <servers />
   </component>
