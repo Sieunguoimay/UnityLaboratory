@@ -203,11 +203,19 @@ namespace Core.Unity
         public void SetInt(int d, int e, int f)
         {
         }
+
         public void SetInt(int d, int e)
         {
         }
+
         public void SetInt(int d)
         {
+        }
+
+        private bool a;
+        public void SetString(string s)
+        {
+            Debug.Log("Set to " + s);
         }
 
         public class BroadcastListener<T> : IBroadcastListener<T>

@@ -1,88 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Core.Unity
+namespace Core.Unity.Editor
 {
-    public class DataBinder : MonoBehaviour
-    {
-        [SerializeField] public Connector[] connectors;
-
-        [SerializeField] public ObjectSelector srcSelector;
-
-        [Serializable]
-        public class Connector
-        {
-            [SerializeField] public PathSelector[] srcPath;
-
-            [SerializeField] public ObjectSelector dstSelector = new ObjectSelector();
-
-            [SerializeField] public PathSelector[] dstPath;
-        }
-
-        public void Bind()
-        {
-            if (srcSelector.selectedData == null || connectors == null) return;
-            foreach (var con in connectors)
-            {
-                if (con.srcPath == null || con.dstPath == null) continue;
-
-                var srcLast = con.srcPath.Last();
-                var data = GetLastData(srcSelector.selectedData, con.srcPath);
-                var dataType = srcLast.GetMemVarType(true);
-
-                var lastDstSelector = con.dstPath.Last();
-                var l = con.dstPath.ToList();
-                var destObject = GetLastData(con.dstSelector.selectedData, l.GetRange(0, l.Count - 1).ToArray());
-                var requiredType = lastDstSelector.GetMemVarType(false);
-
-                if (requiredType == null || dataType == null)
-                {
-                    Debug.Log($"{nameof(DataBinder)}: data types are null");
-                    continue;
-                }
-
-                if (requiredType == dataType)
-                {
-                    lastDstSelector.SetValue(destObject, data);
-                    Debug.Log($"{nameof(DataBinder)}:{srcLast.baseTypeWrapper.typeFullName}.{srcLast.selectedMemVarName}({data}) ---> {lastDstSelector.baseTypeWrapper.typeFullName}.{lastDstSelector.selectedMemVarName}");
-                }
-                else
-                {
-                    Debug.LogError($"{nameof(DataBinder)} data mismatch {dataType.Name}!={requiredType.Name}");
-                }
-            }
-        }
-
-        private object GetLastData(object baseData, PathSelector[] path)
-        {
-            var currentData = baseData;
-            try
-            {
-                foreach (var ps in path)
-                {
-                    currentData = ps.GetValue(currentData);
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.Log(nameof(DataBinder) + ": GetLastData: " + exception.Message);
-            }
-
-            return currentData;
-        }
-
-        [ContextMenu("Test")]
-        public void CreateSrcTypeOptions() => srcSelector.CreateSrcTypeOptionsFromInspector();
-    }
-
     [CustomEditor(typeof(DataBinder))]
     [CanEditMultipleObjects]
-    public class DataBinderEditor : Editor
+    public class DataBinderEditor : UnityEditor.Editor
     {
         private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20f);
 
@@ -97,14 +22,17 @@ namespace Core.Unity
         public override void OnInspectorGUI()
         {
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(new GUIContent("Data"),GUILayout.Width(50));
             ObjectSelector.DrawObjectSelector(DataBinder.srcSelector);
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.Separator();
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
             if (DataBinder.connectors != null)
             {
                 DrawConnectors(DataBinder, DataBinder.connectors, DataBinder.srcSelector.selectedTypeWrapper.GetSerializedType());
             }
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginHorizontal();
 
@@ -121,6 +49,7 @@ namespace Core.Unity
             // GUILayout.FlexibleSpace();
 
             EditorGUILayout.EndHorizontal();
+
         }
 
 
@@ -128,6 +57,7 @@ namespace Core.Unity
         {
             foreach (var con in connectors)
             {
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 var dstDefaultType = con.dstSelector?.selectedTypeWrapper.GetSerializedType();
 
                 EditorGUILayout.BeginHorizontal();
@@ -164,19 +94,25 @@ namespace Core.Unity
                 PathSelector.DrawPath(con.dstPath, dstDefaultType, false);
                 EditorGUILayout.EndHorizontal();
 
+
                 EditorGUILayout.BeginHorizontal();
+
+                var guiColor = GUI.color;
+                GUI.color = Color.red;
                 if (GUILayout.Button("x", new[] {MiniButtonWidth}))
                 {
                     ArrayUtils.Remove(ref dataBinder.connectors, con);
                     break;
                 }
 
+                GUI.color = guiColor;
+
                 ObjectSelector.DrawObjectSelector(con.dstSelector);
+                con.dataConverter.Draw();
                 // GUILayout.FlexibleSpace();
 
-
                 EditorGUILayout.EndHorizontal();
-                EditorGUILayout.Separator();
+                EditorGUILayout.EndVertical();
             }
         }
     }

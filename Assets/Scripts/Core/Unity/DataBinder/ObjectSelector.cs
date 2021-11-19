@@ -11,10 +11,10 @@ namespace Core.Unity
     [Serializable]
     public class ObjectSelector
     {
-        public UnityEngine.Object source;
-        public object selectedData;
+        [SerializeField] public UnityEngine.Object source;
+        [SerializeField] public object selectedData;
 
-        public SerializableTypeWrapper selectedTypeWrapper = new SerializableTypeWrapper();
+        [SerializeField] public SerializableTypeWrapper selectedTypeWrapper = new SerializableTypeWrapper();
 
 #if UNITY_EDITOR
 
@@ -40,7 +40,8 @@ namespace Core.Unity
             if (source == null) return;
 
             _srcTypes.Clear();
-
+            _srcData.Clear();
+            
             if (source is GameObject src)
             {
                 var srcTypeNames = new List<string>();

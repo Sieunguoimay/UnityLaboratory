@@ -16,9 +16,10 @@
               <e p="ArrayUtils.cs" t="Include" />
               <e p="DataBinder.cs" t="Include" />
               <e p="DataBinderTest.cs" t="Include" />
-              <e p="DataTrigger.cs" t="Include" />
+              <e p="DataConverter.cs" t="Include" />
               <e p="Editor" t="Include">
                 <e p="ColorPointDrawer.cs" t="Include" />
+                <e p="DataBinderEditor.cs" t="Include" />
                 <e p="EditorList.cs" t="Include" />
               </e>
               <e p="ObjectSelector.cs" t="Include" />

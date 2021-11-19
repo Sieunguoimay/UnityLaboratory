@@ -51,7 +51,7 @@ namespace Core.Unity
             }
         }
 
-        public void SetValue(object target, object data)
+        public void SetValue(object target, object data, Type dataType)
         {
             if (isProperty)
             {
@@ -66,7 +66,7 @@ namespace Core.Unity
                 var methInfo = baseTypeWrapper.GetSerializedType().GetMethods(MethodFlag).FirstOrDefault(m => m.Name.Equals(selectedMemVarName) && m.GetParameters().Length == 1);
                 if (methInfo != null)
                 {
-                    methInfo?.Invoke(target, new[] {data});
+                    methInfo?.Invoke(target, new[] {Convert.ChangeType(data, dataType)});
                 }
                 else
                 {
@@ -138,6 +138,13 @@ namespace Core.Unity
                 isToRead = toRead;
             }
 
+            UpdateOptions();
+        }
+
+        private void UpdateOptions()
+        {
+            var baseType = baseTypeWrapper.GetSerializedType();
+
             _propertyInfos = baseType.GetProperties(PropertyFlag);
             _fieldInfos = baseType.GetFields(FieldFlag);
             _methodInfos = baseType.GetMethods(MethodFlag);
@@ -166,6 +173,7 @@ namespace Core.Unity
         public void UpdateSerializedMemVar()
         {
             if (_selectedIndex < 0 || _selectedIndex >= _options.Length) return;
+            UpdateOptions();
             selectedMemVarName = _options[_selectedIndex];
             isProperty = IsPropertyFromInspector();
             isField = IsFieldFromInspector();
@@ -177,8 +185,8 @@ namespace Core.Unity
         }
 
 
-        private bool IsPropertyFromInspector() => (_selectedIndex < _propertyInfos.Length);
-        private bool IsFieldFromInspector() => (_selectedIndex < _fieldInfos.Length) && !IsPropertyFromInspector();
+        private bool IsPropertyFromInspector() => (_selectedIndex < (_propertyInfos?.Length ?? 0));
+        private bool IsFieldFromInspector() => (_selectedIndex < (_fieldInfos?.Length ?? 0) + (_propertyInfos?.Length ?? 0)) && !IsPropertyFromInspector();
 
         public bool Draw()
         {

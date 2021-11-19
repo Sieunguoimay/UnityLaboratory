@@ -18,13 +18,33 @@ namespace Core.Unity
             array = newArray;
         }
 
-        public static void Remove<T>(ref T[] array,T item)
+        public static void Remove<T>(ref T[] array, T item)
         {
             var newArray = new T[array.Length - 1];
             int skip = 0;
             for (int i = 0; i < array.Length; i++)
             {
                 if (array[i].Equals(item))
+                {
+                    //skipp
+                    skip++;
+                }
+                else
+                {
+                    newArray[i - skip] = array[i];
+                }
+            }
+
+            array = newArray;
+        }
+
+        public static void Remove<T>(ref T[] array, int index)
+        {
+            var newArray = new T[array.Length - 1];
+            int skip = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (i == index)
                 {
                     //skipp
                     skip++;
