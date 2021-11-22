@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core;
+using Core.Unity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,6 +14,7 @@ public class Main : MonoBehaviour
     [SerializeField] private PlayerSharedConfigData playerSharedConfigDataAsset;
 
     private Player _player;
+    private EventSignal _eventSignal;
 
     private void Awake()
     {
@@ -42,7 +44,8 @@ public class Main : MonoBehaviour
         _player.Setup(sharedData);
         playerUI.Setup(sharedData);
 
-        Locator.Instance.InvokeBroadcaster();
+        Locator.Instance.Broadcaster.Broadcast();
+        _eventSignal = GetComponentInChildren<EventSignal>();
     }
 
     void Update()
@@ -75,14 +78,17 @@ public class Main : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            InputManager.Instance.KeyCodeBroadcaster.SetData(KeyCode.B);
-            InputManager.Instance.KeyCodeBroadcaster.Broadcast(2);
+            // InputManager.Instance.KeyCodeBroadcaster.SetData(KeyCode.B);
+            // InputManager.Instance.KeyCodeBroadcaster.Broadcast(2);
+            // _eventSignal?.Signal(1);
+            Locator.Instance.EventDispatcher?.Publish("OnSomethingHappened", null);
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            InputManager.Instance.KeyCodeBroadcaster.SetData(KeyCode.C);
-            InputManager.Instance.KeyCodeBroadcaster.Broadcast(4);
+            // InputManager.Instance.KeyCodeBroadcaster.SetData(KeyCode.C);
+            // InputManager.Instance.KeyCodeBroadcaster.Broadcast(4);
+            Locator.Instance.EventDispatcher?.Publish("OnAnotherThingHappened", null);
         }
     }
 

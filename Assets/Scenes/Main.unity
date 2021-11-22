@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 361478229}
   - component: {fileID: 361478231}
   - component: {fileID: 361478230}
+  - component: {fileID: 361478232}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -204,41 +205,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventGroups:
-  - filter: 0
+  - filter: 1
     onSignal:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 361478231}
-          m_MethodName: 
+          m_MethodName: Bind
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
-          m_CallState: 2
-  - filter: 0
-    onSignal:
-      m_PersistentCalls:
-        m_Calls: []
-  - filter: 0
-    onSignal:
-      m_PersistentCalls:
-        m_Calls: []
+          m_CallState: 1
   filterGroups:
-  - hello
-  - kitty
-  - OK
-  - OK
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - default
 --- !u!114 &361478231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,10 +237,10 @@ MonoBehaviour:
   connectors:
   - srcPath:
     - baseTypeWrapper:
-        typeFullName: UnityEngine.Transform
+        typeFullName: Core.Unity.DataBinderTest
       selectedMemVarTypeWrapper:
-        typeFullName: System.Boolean
-      selectedMemVarName: 
+        typeFullName: System.String
+      selectedMemVarName: broadcasterName
       isProperty: 0
       isField: 1
       isToRead: 1
@@ -278,47 +261,41 @@ MonoBehaviour:
       selectedTypeWrapper:
         typeFullName: Core.Unity.DataBinderTest
       selectedTypeIndex: 0
-  - srcPath:
-    - baseTypeWrapper:
-        typeFullName: UnityEngine.Transform
-      selectedMemVarTypeWrapper:
-        typeFullName: System.Object
-      selectedMemVarName: 
-      isProperty: 0
-      isField: 1
-      isToRead: 1
-    - baseTypeWrapper:
-        typeFullName: 
-      selectedMemVarTypeWrapper:
-        typeFullName: 
-      selectedMemVarName: 
-      isProperty: 0
-      isField: 0
-      isToRead: 1
-    dataConverter:
-      targetType: 0
-      format: '{0}'
-    dstPath: []
-    dstSelector:
-      source: {fileID: 0}
-      selectedTypeWrapper:
-        typeFullName: 
-      selectedTypeIndex: -1
-  - srcPath: []
-    dataConverter:
-      targetType: 0
-      format: '{0}'
-    dstPath: []
-    dstSelector:
-      source: {fileID: 0}
-      selectedTypeWrapper:
-        typeFullName: 
-      selectedTypeIndex: -1
   srcSelector:
-    source: {fileID: 414411565}
+    source: {fileID: 361478229}
     selectedTypeWrapper:
-      typeFullName: UnityEngine.Transform
+      typeFullName: Core.Unity.DataBinderTest
     selectedTypeIndex: 0
+--- !u!114 &361478232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361478226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2352881266e5474f98311923cdd3857c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventGroups:
+  - eventNames:
+    - OnSomethingHappened
+    - OnAnotherThingHappened
+    invoker:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 361478231}
+          m_MethodName: Bind
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &414411565
 GameObject:
   m_ObjectHideFlags: 0

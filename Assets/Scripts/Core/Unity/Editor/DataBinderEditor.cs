@@ -22,8 +22,16 @@ namespace Core.Unity.Editor
         public override void OnInspectorGUI()
         {
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label(new GUIContent("Data"),GUILayout.Width(50));
+            GUILayout.Label(new GUIContent("Data"), GUILayout.Width(30));
             ObjectSelector.DrawObjectSelector(DataBinder.srcSelector);
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Add " + nameof(EventListener)))
+            {
+                var el = DataBinder.gameObject.AddComponent<EventListener>();
+                el.AddEventGroup();
+                UnityEditor.Events.UnityEventTools.AddPersistentListener(el.eventGroups[0].invoker, DataBinder.Bind);
+            }
+
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -32,6 +40,7 @@ namespace Core.Unity.Editor
             {
                 DrawConnectors(DataBinder, DataBinder.connectors, DataBinder.srcSelector.selectedTypeWrapper.GetSerializedType());
             }
+
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginHorizontal();
@@ -49,7 +58,6 @@ namespace Core.Unity.Editor
             // GUILayout.FlexibleSpace();
 
             EditorGUILayout.EndHorizontal();
-
         }
 
 
@@ -71,6 +79,7 @@ namespace Core.Unity.Editor
 
                 if (GUILayout.Button("+", GUILayout.Width(20f)))
                 {
+                    if (con.srcPath == null) con.srcPath = new PathSelector[0];
                     ArrayUtils.Add(ref con.srcPath, PathSelector.CreatePathSelector(con.srcPath, srcDefaultType, true));
                 }
 
@@ -109,7 +118,6 @@ namespace Core.Unity.Editor
 
                 ObjectSelector.DrawObjectSelector(con.dstSelector);
                 con.dataConverter.Draw();
-                // GUILayout.FlexibleSpace();
 
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();

@@ -18,9 +18,10 @@ namespace Core.Unity
             [SerializeField] public PathSelector[] dstPath;
             [SerializeField] public ObjectSelector dstSelector = new ObjectSelector();
         }
-
+        [ContextMenu("Bind")]
         public void Bind()
         {
+            var time = DateTime.Now.Millisecond;
             if (srcSelector.selectedData == null || connectors == null) return;
             foreach (var con in connectors)
             {
@@ -54,6 +55,8 @@ namespace Core.Unity
                     Debug.LogError($"{nameof(DataBinder)} data mismatch {newDataType?.Name}!={requiredType?.Name}");
                 }
             }
+
+            Debug.Log("Duration: " + (DateTime.Now.Millisecond - time));
         }
 
         private object GetLastData(object baseData, PathSelector[] path)

@@ -53,10 +53,10 @@ namespace Core.Unity
             return (f & filter) != 0;
         }
 
-        [ContextMenu("Test signal 2")]
-        public void Signal()
+        [ContextMenu("Signal All")]
+        public void SignalAll()
         {
-            Signal(2);
+            Signal(~0);
         }
 
         public void AddNewEventGroup()
@@ -79,6 +79,33 @@ namespace Core.Unity
         {
             if (filterGroups.Length > 0)
                 ArrayUtils.Remove(ref filterGroups, filterGroups.Length - 1);
+        }
+
+        public void RemoveFilterGroup(int index)
+        {
+            var pow = Mathf.CeilToInt(Mathf.Pow(2, filterGroups.Length - 1));
+            foreach (var eg in eventGroups)
+            {
+                for (int i = index; i < filterGroups.Length - 1; i++)
+                {
+                    var pow2 = Mathf.CeilToInt(Mathf.Pow(2, i + 1));
+                    var pow3 = Mathf.CeilToInt(Mathf.Pow(2, i));
+                    if ((eg.filter & pow2) != 0)
+                    {
+                        eg.filter |= pow3;
+                    }
+
+                    else
+                    {
+                        eg.filter &= ~pow3;
+                    }
+                }
+
+                eg.filter &= ~pow;
+            }
+
+            if (index < filterGroups.Length)
+                ArrayUtils.Remove(ref filterGroups, index);
         }
     }
 }

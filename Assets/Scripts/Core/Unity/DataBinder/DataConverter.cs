@@ -74,13 +74,14 @@ namespace Core.Unity
 #if UNITY_EDITOR
         public void Draw()
         {
+            GUILayout.Space(10);
             EditorGUILayout.LabelField(new GUIContent("Convert"),GUILayout.Width(50));
 
             targetType = (TargetType) EditorGUILayout.EnumPopup(GUIContent.none, targetType, GUILayout.Width(70));
             
             if (targetType == TargetType.String)
             {
-                format = EditorGUILayout.TextField(format, GUILayout.Width(153));
+                format = EditorGUILayout.TextField(format, GUILayout.Width(100));
             }
         }
 #endif

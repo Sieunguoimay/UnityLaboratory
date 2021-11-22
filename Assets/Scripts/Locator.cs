@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core.Unity.MessageBus;
+using UnityEngine;
 
 namespace Core
 {
@@ -29,10 +30,6 @@ namespace Core
         }
 
         public Broadcaster<int> Broadcaster { get; } = new Broadcaster<int>();
-
-        public void InvokeBroadcaster()
-        {
-            Broadcaster.Broadcast();
-        }
+        public EventDispatcher EventDispatcher { get; set; } = new EventDispatcher();
     }
 }

@@ -9,22 +9,34 @@
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
           <e p="Core" t="Include">
+            <e p="ArrayUtils.cs" t="Include" />
             <e p="Broadcaster.cs" t="Include" />
+            <e p="MessageBus" t="Include">
+              <e p="EventDispatcher.cs" t="Include" />
+            </e>
             <e p="Registrars.cs" t="Include" />
             <e p="Singletons.cs" t="Include" />
+            <e p="StringUtils.cs" t="Include" />
             <e p="Unity" t="Include">
-              <e p="ArrayUtils.cs" t="Include" />
-              <e p="DataBinder.cs" t="Include" />
-              <e p="DataBinderTest.cs" t="Include" />
-              <e p="DataConverter.cs" t="Include" />
-              <e p="Editor" t="Include">
-                <e p="ColorPointDrawer.cs" t="Include" />
-                <e p="DataBinderEditor.cs" t="Include" />
-                <e p="EditorList.cs" t="Include" />
+              <e p="DataBinder" t="Include">
+                <e p="DataBinder.cs" t="Include" />
+                <e p="DataConverter.cs" t="Include" />
+                <e p="ObjectSelector.cs" t="Include" />
+                <e p="PathSelector.cs" t="Include" />
+                <e p="SerializableTypeWrapper.cs" t="Include" />
               </e>
-              <e p="ObjectSelector.cs" t="Include" />
-              <e p="PathSelector.cs" t="Include" />
-              <e p="SerializableTypeWrapper.cs" t="Include" />
+              <e p="Editor" t="Include">
+                <e p="DataBinderEditor.cs" t="Include" />
+                <e p="EventGroupDrawer.cs" t="Include" />
+                <e p="EventListenerEditor.cs" t="Include" />
+                <e p="EventSignalEditor.cs" t="Include" />
+              </e>
+              <e p="EventListener.cs" t="Include" />
+              <e p="EventSignal.cs" t="Include" />
+              <e p="Test" t="Include">
+                <e p="ColorPointDrawer.cs" t="Include" />
+                <e p="DataBinderTest.cs" t="Include" />
+              </e>
             </e>
           </e>
           <e p="InputManager.cs" t="Include" />
