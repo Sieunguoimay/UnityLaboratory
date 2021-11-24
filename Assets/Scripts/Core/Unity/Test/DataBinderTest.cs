@@ -29,6 +29,9 @@ namespace Core.Unity
         private bool _initialized;
         private bool _subscribed;
 
+        public event Action oneAction = delegate { };
+        public event Action anotherAction = delegate { };
+
         private void Awake()
         {
             Locator.Instance.Broadcaster.Registrar.Register(nameof(DataBinderTest), this, ~0);
@@ -212,7 +215,12 @@ namespace Core.Unity
         {
         }
 
+        [ContextMenu("InvokeOneAction")]
+        public void InvokeOneAction() => oneAction?.Invoke();
+        [ContextMenu("InvokeAnotherAction")]
+        public void InvokeAnotherAction() => anotherAction?.Invoke();
         private bool a;
+
         public void SetString(string s)
         {
             Debug.Log("Set to " + s);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -41,7 +42,7 @@ namespace Core.Unity
 
             _srcTypes.Clear();
             _srcData.Clear();
-            
+
             if (source is GameObject src)
             {
                 var srcTypeNames = new List<string>();
@@ -93,4 +94,68 @@ namespace Core.Unity
         }
 #endif
     }
+    //
+    // [CustomPropertyDrawer(typeof(ObjectSelector))]
+    // public class ObjectSelectorDrawer : PropertyDrawer
+    // {
+    //     private ObjectSelector objectSelector;
+    //
+    //     public ObjectSelector GetSelector(SerializedProperty property)
+    //     {
+    //         if (objectSelector == null)
+    //         {
+    //             var baseObject = property.serializedObject.targetObject;
+    //             var baseObjectType = baseObject.GetType();
+    //             var objectSelectorFieldInfo = baseObjectType.GetFields().FirstOrDefault(f => f.FieldType == typeof(ObjectSelector));
+    //             if (objectSelectorFieldInfo != null)
+    //             {
+    //                 objectSelector = objectSelectorFieldInfo.GetValue(baseObject) as ObjectSelector;
+    //             }
+    //         }
+    //
+    //         return objectSelector;
+    //     }
+    //
+    //
+    //     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    //     {
+    //         EditorGUI.BeginProperty(position, label, property);
+    //         var sourceProp = property.FindPropertyRelative("source");
+    //         EditorGUI.BeginChangeCheck();
+    //         position.width = 100;
+    //         EditorGUI.PropertyField(position, sourceProp);
+    //         if (EditorGUI.EndChangeCheck())
+    //         {
+    //             InvokeMethod(GetSelector(property));
+    //         }
+    //
+    //         position.x += 100;
+    //         var SrcTypesOptionsProp = property.FindPropertyRelative("SrcTypesOptions");
+    //
+    //         EditorGUI.PropertyField(position,SrcTypesOptionsProp,)
+    //         EditorGUI.EndProperty();
+    //         // var src = EditorGUILayout.ObjectField(GUIContent.none, Selector.source, typeof(UnityEngine.Object), true,
+    //         //     GUILayout.Width(150));
+    //         //
+    //         // if (Selector.source == null || Selector.source != src || Selector.SrcTypesOptions == null)
+    //         // {
+    //         //     Selector.source = src;
+    //         //     Selector.CreateSrcTypeOptionsFromInspector();
+    //         // }
+    //         //
+    //         // if (Selector.SrcTypesOptions == null) return;
+    //         // var index = EditorGUILayout.Popup(Selector.selectedTypeIndex, Selector.SrcTypesOptions, GUILayout.Width(50));
+    //         // if (Selector.selectedTypeIndex != index)
+    //         // {
+    //         //     Selector.selectedTypeIndex = index;
+    //         //     Selector.UpdateSerializable(index);
+    //         // }
+    //     }
+    //
+    //     private void InvokeMethod(ObjectSelector selector)
+    //     {
+    //         var methInfo = typeof(ObjectSelector).GetMethod("CreateSrcTypeOptionsFromInspector");
+    //         methInfo?.Invoke(selector, null);
+    //     }
+    // }
 }
